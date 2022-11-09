@@ -1,0 +1,11 @@
+ PlayerPosition : (5; 5) 
+OOO + 10 HP 
+Player's Health after move: 100 
+ PlayerPosition : (5; 2) 
+OOOOPS -10 HP
+Player's Health after move: 70 
+ PlayerPosition : (2; 2) 
+Locked some cells ;(
+Player's Health after move: 50 
+
+-----RESTARTED LEVEL--------

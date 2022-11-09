@@ -1,0 +1,6 @@
+ PlayerPosition : (5; 5) 
+OOO + 10 HP 
+Player's Health after move: 100 
+ PlayerPosition : (3; 4) 
+Unlock some cells
+Player's Health after move: 70 
