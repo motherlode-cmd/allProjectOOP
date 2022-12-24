@@ -19,6 +19,7 @@ QTableWidgetItem *CellView::drowNewCell(const Cell & cell, const Position &playe
 
 void CellView::drowCell(QTableWidgetItem *item, const Cell &cell, const Position &playerPosition)
 {
+    //if(cell.getEvent() == nullptr) {std::cout<<"-"<<std::endl;}
     setItem(getType(cell.getEvent()), cell.getIsOpen(), item);
     if(playerPosition.getX() == cell.getPosition().getX() && playerPosition.getY() == cell.getPosition().getY()) {
         item->setText("Here");
@@ -28,6 +29,7 @@ void CellView::drowCell(QTableWidgetItem *item, const Cell &cell, const Position
 
 void CellView::setItem(int numType, bool isOpen, QTableWidgetItem *item)
 {
+    //std::cout<<"setItem"<<std::endl;
     QColor color = QColor(1,1,1);
     switch (numType) {
     case 0:
@@ -54,8 +56,12 @@ void CellView::setItem(int numType, bool isOpen, QTableWidgetItem *item)
         color = QColor(255, 255, 0);
         item->setText("Key");
         break;
+    case -1:
+        color = QColor(255,195,195);
+        item->setText(" ");
+        break;
     default:
-        color = QColor(255,255,255);
+        color = QColor(255,195,195);
         break;
     }
     if(!isOpen && numType != 10) {
@@ -66,6 +72,7 @@ void CellView::setItem(int numType, bool isOpen, QTableWidgetItem *item)
 
 int CellView::getType(Event *event)
 {
+    if(event == nullptr) return -1;
     if(event == dynamic_cast<EventNone *>(event)) return 0;
     if(event == dynamic_cast<EventAdd *>(event)) return 1;
     if(event == dynamic_cast<EventLock *>(event)) return 3;

@@ -45,8 +45,11 @@ HumanPlayer::HumanPlayer(HumanPlayer &&source)
 void HumanPlayer::makeMove(const Position & newPosition)
 {
     try {
-        if(currentPosition.getX() >= 0 && currentPosition.getY() >= 0)
+        if(currentPosition.getX() >= 0 && currentPosition.getY() >= 0){
             currentPosition = newPosition;
+            notify(Level::Info, "Player's new position (" + std::to_string(newPosition.getX())
+                   +" ; " + std::to_string(newPosition.getY()) + ")" );
+        }
         else
             throw(currentPosition);
     } catch (Position pos){
@@ -88,5 +91,11 @@ void HumanPlayer::startNew(const Position &pos)
     currentPosition = pos;
     health = 100;
     key = false;
+}
+
+std::string HumanPlayer::toString()
+{
+    std::string s = "HPPOS: " + printState() + " " +std::to_string(health) + "\n";
+    return s;
 }
 

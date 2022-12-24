@@ -13,6 +13,11 @@ public:
     bool operator == (const FileLogger & other) {
         return fileName == other.fileName;
     }
+
+    std::string toString() override {
+        std::string s = "\t\tFL " + fileName + "\n";
+        return s;
+    }
 private:
     std::ofstream outfile;
     std::string fileName;

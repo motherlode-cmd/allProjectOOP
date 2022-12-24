@@ -5,5 +5,6 @@ class AbstractMove{
 public:
     virtual ~AbstractMove(){}
     virtual const Position getMove() const = 0;
+
 };
 #endif // ABSTRACTMOVE_H

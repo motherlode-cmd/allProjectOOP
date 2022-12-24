@@ -1,4 +1,6 @@
 #include "field.h"
+#include "Events/EventField/eventField.h"
+#include "Events/EventPlayer/eventPlayer.h"
 #include <cstdlib>
 #include <iostream>
 #include <QString>
@@ -15,7 +17,7 @@ Field::Field(int height, int width):height(height), width(width)
             }
             for(int i =0; i < height; i++) {
                 for(int j = 0; j < width; j++) {
-                    cells[i][j] = Cell(eventDefault, Position(i,j), rand() % 4 != 0);
+                    cells[i][j] = Cell(eventDefault, Position(i,j), true);
                     if(cells[i][j].getIsOpen()){
                         startX = i;
                         startY = j;
@@ -23,7 +25,7 @@ Field::Field(int height, int width):height(height), width(width)
                 }
             }
             positionPlayer = Position(startX,startY);
-            positionWin = Position(0,0);
+            //positionWin = Position(0,0);
         } else {
             throw (height * width);
         }
@@ -76,6 +78,7 @@ Field &Field::operator = (Field && other)
 {
     if(this != &other) {
         for(int i = 0; i < height; i++) {
+            //std::cout<<"deleted"<<i<<std::endl;
             delete [] cells[i];
         }
         delete cells;
@@ -129,17 +132,23 @@ std::ostream & operator<<(std::ostream & os, const Field & rhs)
 
 void Field::setNewEvent(Event *event, int x, int y)
 {
+    //std::cout<<"setEvent start" + std::to_string(x) + " " + std::to_string(y)<<std::endl;
     try {
-    if(validXY(x,y))
+    if(validXY(x,y)) {
         cells[x][y].setEvent(event);
+        if(obs != nullptr) {
+            event->setObs(obs);
+        }
+    }
     else
         throw(Position(x,y));
     } catch(Position invalidPos) {
         notify(Level::Error, std::string("Cannot set Event in cell [{},{}]", x, y));
     }
+
 }
 
-void Field::playerMove(int deltaX, int deltaY)
+void Field::playerMove(int deltaX, int deltaY, Player * player)
 {
     try {
         if(height > 0 && width > 0) {
@@ -147,12 +156,15 @@ void Field::playerMove(int deltaX, int deltaY)
                 Position newPos(Position(abs(positionPlayer.getX(), deltaX, height), abs(positionPlayer.getY(), deltaY, width)));
                 if(cells[newPos.getX()][newPos.getY()].getIsOpen() && validPosition(newPos)) {
                     positionPlayer = newPos;
-                    notify(Level::Info, "Player's new position (" + std::to_string(newPos.getX())
-                           +" ; " + std::to_string(newPos.getY()) + ")" );
+                    player->makeMove(positionPlayer);
+                    if(cells[newPos.getX()][newPos.getY()].getEvent() != nullptr && cells[newPos.getX()][newPos.getY()].getEvent() == dynamic_cast<EventField *>(cells[newPos.getX()][newPos.getY()].getEvent()))
+                        ((EventField *)cells[newPos.getX()][newPos.getY()].getEvent())->newField(*this);
+                    else if(cells[newPos.getX()][newPos.getY()].getEvent() != nullptr && cells[newPos.getX()][newPos.getY()].getEvent() == dynamic_cast<EventPlayer *>(cells[newPos.getX()][newPos.getY()].getEvent()))
+                       ((EventPlayer *)cells[newPos.getX()][newPos.getY()].getEvent())->makeAction(player);
                 } else {
                     throw(newPos);
                 }
-            }catch(Position invalidPos) {
+            } catch(Position invalidPos) {
                 notify(Level::Error, "Cannot make move on blocked Cell");
             }
       } else {
@@ -160,6 +172,13 @@ void Field::playerMove(int deltaX, int deltaY)
         }
     } catch(int s) {
         notify(Level::Error, "Cannot make move on invalid field");
+    }
+}
+
+void Field::setStartPosition(Position &&pos)
+{
+    if(validPosition(pos)) {
+        positionPlayer = pos;
     }
 }
 
@@ -171,19 +190,6 @@ int Field::getHeight() const
 int Field::getWidth() const
 {
     return width;
-}
-
-void Field::setCell(int x, int y, const Cell &cell)
-{
-    try{
-        if(validXY(x,y)) {
-            cells[x][y] = cell;
-        } else {
-            throw(Position(x,y));
-        }
-    }catch(Position invalidPos) {
-        notify(Level::Error, std::string("Cannot set cell [{},{}] with invalid pos", x, y));
-    }
 }
 
 Event *Field::getCurrentEvent()
@@ -244,6 +250,13 @@ bool Field::isWin()
 {
     return positionPlayer.getX() == positionWin.getX() && positionPlayer.getY() == positionWin.getY();
 }
+
+void Field::openCell(int x, int y)
+{
+    unlockCell(abs(x,1,height), y);
+    unlockCell(x, abs(y,1,width));
+}
+
 
 const Position &Field::getPositionPlayer() const
 {

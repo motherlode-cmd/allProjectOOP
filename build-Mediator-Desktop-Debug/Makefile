@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../Mediator -I. -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
+INCPATH       = -I../Mediator -I. -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = Mediator1.0.0
 DISTDIR = /home/motherlode/build-Mediator-Desktop-Debug/.tmp/Mediator1.0.0
 LINK          = g++
 LFLAGS        = -fPIC
-LIBS          = $(SUBLIBS) /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) /usr/lib/libQt5OpenGL.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -61,7 +61,6 @@ SOURCES       = ../Mediator/Events/EventPlayer/eventkey.cpp \
 		../Mediator/GameLogic/cell.cpp \
 		../Mediator/GameLogic/controller.cpp \
 		../Mediator/GameLogic/field.cpp \
-		../Mediator/GameLogic/generatelevel.cpp \
 		../Mediator/GameLogic/humanPlayer.cpp \
 		../Mediator/GameLogic/position.cpp \
 		../Mediator/Logger/consolelogger.cpp \
@@ -72,7 +71,9 @@ SOURCES       = ../Mediator/Events/EventPlayer/eventkey.cpp \
 		../Mediator/Observer/loggerobserver.cpp \
 		../Mediator/Views/cellview.cpp \
 		../Mediator/Views/fieldview.cpp \
+		../Mediator/dataparser.cpp \
 		../Mediator/dialog.cpp \
+		../Mediator/hasher.cpp \
 		../Mediator/jsonservise.cpp \
 		../Mediator/main.cpp \
 		../Mediator/commandreader.cpp \
@@ -88,7 +89,6 @@ OBJECTS       = eventkey.o \
 		cell.o \
 		controller.o \
 		field.o \
-		generatelevel.o \
 		humanPlayer.o \
 		position.o \
 		consolelogger.o \
@@ -99,7 +99,9 @@ OBJECTS       = eventkey.o \
 		loggerobserver.o \
 		cellview.o \
 		fieldview.o \
+		dataparser.o \
 		dialog.o \
+		hasher.o \
 		jsonservise.o \
 		main.o \
 		commandreader.o \
@@ -415,11 +417,22 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../Mediator/Events/EventPlayer/eventadd.h \
 		../Mediator/Events/EventPlayer/eventnone.h \
 		../Mediator/Events/event.h \
+		../Mediator/Exeptions/exeptionfield.h \
+		../Mediator/Exeptions/exeptionfile.h \
+		../Mediator/Exeptions/exeptionplayer.h \
+		../Mediator/Exeptions/myexeption.h \
 		../Mediator/GameLogic/Player.h \
+		../Mediator/GameLogic/Rools/KeyRool.h \
+		../Mediator/GameLogic/Rools/RulesVectors.h \
+		../Mediator/GameLogic/Rools/UnlockRools.h \
+		../Mediator/GameLogic/Rools/WinRool.h \
+		../Mediator/GameLogic/Rools/eventrool.h \
+		../Mediator/GameLogic/Rools/lockcellrool.h \
+		../Mediator/GameLogic/Rools/playerpositionrool.h \
 		../Mediator/GameLogic/cell.h \
 		../Mediator/GameLogic/controller.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/generatelevel.h \
+		../Mediator/GameLogic/generaterools.h \
 		../Mediator/GameLogic/humanPlayer.h \
 		../Mediator/GameLogic/position.h \
 		../Mediator/Logger/Level.h \
@@ -437,10 +450,13 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../Mediator/Views/cellview.h \
 		../Mediator/Views/fieldview.h \
 		../Mediator/commandreader.h \
+		../Mediator/dataparser.h \
 		../Mediator/dialog.h \
+		../Mediator/hasher.h \
 		../Mediator/jsonservise.h \
 		../Mediator/mediator.h \
-		../Mediator/MediatorInterface.h ../Mediator/Events/EventPlayer/eventkey.cpp \
+		../Mediator/MediatorInterface.h \
+		../Mediator/seriallisation.h ../Mediator/Events/EventPlayer/eventkey.cpp \
 		../Mediator/Events/EventField/eventlock.cpp \
 		../Mediator/Events/EventField/eventunlock.cpp \
 		../Mediator/Events/EventField/eventwin.cpp \
@@ -449,7 +465,6 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../Mediator/GameLogic/cell.cpp \
 		../Mediator/GameLogic/controller.cpp \
 		../Mediator/GameLogic/field.cpp \
-		../Mediator/GameLogic/generatelevel.cpp \
 		../Mediator/GameLogic/humanPlayer.cpp \
 		../Mediator/GameLogic/position.cpp \
 		../Mediator/Logger/consolelogger.cpp \
@@ -460,7 +475,9 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		../Mediator/Observer/loggerobserver.cpp \
 		../Mediator/Views/cellview.cpp \
 		../Mediator/Views/fieldview.cpp \
+		../Mediator/dataparser.cpp \
 		../Mediator/dialog.cpp \
+		../Mediator/hasher.cpp \
 		../Mediator/jsonservise.cpp \
 		../Mediator/main.cpp \
 		../Mediator/commandreader.cpp \
@@ -1096,8 +1113,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../Mediator/Mediator_ru_RU.ts $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Mediator/Events/EventField/eventField.h ../Mediator/Events/EventPlayer/eventkey.h ../Mediator/Events/EventField/eventlock.h ../Mediator/Events/EventField/eventunlock.h ../Mediator/Events/EventField/eventwin.h ../Mediator/Events/EventPlayer/eventPlayer.h ../Mediator/Events/EventPlayer/eventadd.h ../Mediator/Events/EventPlayer/eventnone.h ../Mediator/Events/event.h ../Mediator/GameLogic/Player.h ../Mediator/GameLogic/cell.h ../Mediator/GameLogic/controller.h ../Mediator/GameLogic/field.h ../Mediator/GameLogic/generatelevel.h ../Mediator/GameLogic/humanPlayer.h ../Mediator/GameLogic/position.h ../Mediator/Logger/Level.h ../Mediator/Logger/Logger.h ../Mediator/Logger/consolelogger.h ../Mediator/Logger/filelogger.h ../Mediator/MediatorInterface.h ../Mediator/Movers/AbstractMove.h ../Mediator/Movers/FileMover.h ../Mediator/Movers/uimover.h ../Mediator/Observable/Observable.h ../Mediator/Observable/gamesubject.h ../Mediator/Observer/Observer.h ../Mediator/Observer/loggerobserver.h ../Mediator/Views/cellview.h ../Mediator/Views/fieldview.h ../Mediator/commandreader.h ../Mediator/dialog.h ../Mediator/jsonservise.h ../Mediator/mediator.h ../Mediator/MediatorInterface.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Mediator/Events/EventPlayer/eventkey.cpp ../Mediator/Events/EventField/eventlock.cpp ../Mediator/Events/EventField/eventunlock.cpp ../Mediator/Events/EventField/eventwin.cpp ../Mediator/Events/EventPlayer/eventadd.cpp ../Mediator/Events/EventPlayer/eventnone.cpp ../Mediator/GameLogic/cell.cpp ../Mediator/GameLogic/controller.cpp ../Mediator/GameLogic/field.cpp ../Mediator/GameLogic/generatelevel.cpp ../Mediator/GameLogic/humanPlayer.cpp ../Mediator/GameLogic/position.cpp ../Mediator/Logger/consolelogger.cpp ../Mediator/Logger/filelogger.cpp ../Mediator/Movers/FileMover.cpp ../Mediator/Movers/uimover.cpp ../Mediator/Observable/gamesubject.cpp ../Mediator/Observer/loggerobserver.cpp ../Mediator/Views/cellview.cpp ../Mediator/Views/fieldview.cpp ../Mediator/dialog.cpp ../Mediator/jsonservise.cpp ../Mediator/main.cpp ../Mediator/commandreader.cpp ../Mediator/mediator.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Mediator/Events/EventField/eventField.h ../Mediator/Events/EventPlayer/eventkey.h ../Mediator/Events/EventField/eventlock.h ../Mediator/Events/EventField/eventunlock.h ../Mediator/Events/EventField/eventwin.h ../Mediator/Events/EventPlayer/eventPlayer.h ../Mediator/Events/EventPlayer/eventadd.h ../Mediator/Events/EventPlayer/eventnone.h ../Mediator/Events/event.h ../Mediator/Exeptions/exeptionfield.h ../Mediator/Exeptions/exeptionfile.h ../Mediator/Exeptions/exeptionplayer.h ../Mediator/Exeptions/myexeption.h ../Mediator/GameLogic/Player.h ../Mediator/GameLogic/Rools/KeyRool.h ../Mediator/GameLogic/Rools/RulesVectors.h ../Mediator/GameLogic/Rools/UnlockRools.h ../Mediator/GameLogic/Rools/WinRool.h ../Mediator/GameLogic/Rools/eventrool.h ../Mediator/GameLogic/Rools/lockcellrool.h ../Mediator/GameLogic/Rools/playerpositionrool.h ../Mediator/GameLogic/cell.h ../Mediator/GameLogic/controller.h ../Mediator/GameLogic/field.h ../Mediator/GameLogic/generaterools.h ../Mediator/GameLogic/humanPlayer.h ../Mediator/GameLogic/position.h ../Mediator/Logger/Level.h ../Mediator/Logger/Logger.h ../Mediator/Logger/consolelogger.h ../Mediator/Logger/filelogger.h ../Mediator/MediatorInterface.h ../Mediator/Movers/AbstractMove.h ../Mediator/Movers/FileMover.h ../Mediator/Movers/uimover.h ../Mediator/Observable/Observable.h ../Mediator/Observable/gamesubject.h ../Mediator/Observer/Observer.h ../Mediator/Observer/loggerobserver.h ../Mediator/Views/cellview.h ../Mediator/Views/fieldview.h ../Mediator/commandreader.h ../Mediator/dataparser.h ../Mediator/dialog.h ../Mediator/hasher.h ../Mediator/jsonservise.h ../Mediator/mediator.h ../Mediator/MediatorInterface.h ../Mediator/seriallisation.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Mediator/Events/EventPlayer/eventkey.cpp ../Mediator/Events/EventField/eventlock.cpp ../Mediator/Events/EventField/eventunlock.cpp ../Mediator/Events/EventField/eventwin.cpp ../Mediator/Events/EventPlayer/eventadd.cpp ../Mediator/Events/EventPlayer/eventnone.cpp ../Mediator/GameLogic/cell.cpp ../Mediator/GameLogic/controller.cpp ../Mediator/GameLogic/field.cpp ../Mediator/GameLogic/humanPlayer.cpp ../Mediator/GameLogic/position.cpp ../Mediator/Logger/consolelogger.cpp ../Mediator/Logger/filelogger.cpp ../Mediator/Movers/FileMover.cpp ../Mediator/Movers/uimover.cpp ../Mediator/Observable/gamesubject.cpp ../Mediator/Observer/loggerobserver.cpp ../Mediator/Views/cellview.cpp ../Mediator/Views/fieldview.cpp ../Mediator/dataparser.cpp ../Mediator/dialog.cpp ../Mediator/hasher.cpp ../Mediator/jsonservise.cpp ../Mediator/main.cpp ../Mediator/commandreader.cpp ../Mediator/mediator.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Mediator/commandreader.ui ../Mediator/dialog.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../Mediator/Mediator_ru_RU.ts $(DISTDIR)/
 
@@ -1157,7 +1174,7 @@ moc_commandreader.cpp: ../Mediator/commandreader.h \
 		../Mediator/Movers/uimover.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/motherlode/build-Mediator-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/motherlode/Mediator -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/12.2.0 -I/usr/include/c++/12.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/12.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include-fixed -I/usr/include ../Mediator/commandreader.h -o moc_commandreader.cpp
+	/usr/bin/moc $(DEFINES) --include /home/motherlode/build-Mediator-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/motherlode/Mediator -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/12.2.0 -I/usr/include/c++/12.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/12.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include-fixed -I/usr/include ../Mediator/commandreader.h -o moc_commandreader.cpp
 
 moc_dialog.cpp: ../Mediator/dialog.h \
 		../Mediator/Observer/Observer.h \
@@ -1165,7 +1182,7 @@ moc_dialog.cpp: ../Mediator/dialog.h \
 		../Mediator/Logger/Logger.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/motherlode/build-Mediator-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/motherlode/Mediator -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/12.2.0 -I/usr/include/c++/12.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/12.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include-fixed -I/usr/include ../Mediator/dialog.h -o moc_dialog.cpp
+	/usr/bin/moc $(DEFINES) --include /home/motherlode/build-Mediator-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/motherlode/Mediator -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/12.2.0 -I/usr/include/c++/12.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/12.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include-fixed -I/usr/include ../Mediator/dialog.h -o moc_dialog.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1207,40 +1224,43 @@ eventkey.o: ../Mediator/Events/EventPlayer/eventkey.cpp ../Mediator/Events/Event
 eventlock.o: ../Mediator/Events/EventField/eventlock.cpp ../Mediator/Events/EventField/eventlock.h \
 		../Mediator/Events/EventField/eventField.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/cell.h \
-		../Mediator/Events/event.h \
+		../Mediator/GameLogic/Player.h \
 		../Mediator/Observable/gamesubject.h \
 		../Mediator/Observable/Observable.h \
 		../Mediator/Observer/Observer.h \
 		../Mediator/Logger/Level.h \
 		../Mediator/Logger/Logger.h \
-		../Mediator/GameLogic/position.h
+		../Mediator/GameLogic/position.h \
+		../Mediator/GameLogic/cell.h \
+		../Mediator/Events/event.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventlock.o ../Mediator/Events/EventField/eventlock.cpp
 
 eventunlock.o: ../Mediator/Events/EventField/eventunlock.cpp ../Mediator/Events/EventField/eventunlock.h \
 		../Mediator/Events/EventField/eventField.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/cell.h \
-		../Mediator/Events/event.h \
+		../Mediator/GameLogic/Player.h \
 		../Mediator/Observable/gamesubject.h \
 		../Mediator/Observable/Observable.h \
 		../Mediator/Observer/Observer.h \
 		../Mediator/Logger/Level.h \
 		../Mediator/Logger/Logger.h \
-		../Mediator/GameLogic/position.h
+		../Mediator/GameLogic/position.h \
+		../Mediator/GameLogic/cell.h \
+		../Mediator/Events/event.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventunlock.o ../Mediator/Events/EventField/eventunlock.cpp
 
 eventwin.o: ../Mediator/Events/EventField/eventwin.cpp ../Mediator/Events/EventField/eventwin.h \
 		../Mediator/Events/EventField/eventField.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/cell.h \
-		../Mediator/Events/event.h \
+		../Mediator/GameLogic/Player.h \
 		../Mediator/Observable/gamesubject.h \
 		../Mediator/Observable/Observable.h \
 		../Mediator/Observer/Observer.h \
 		../Mediator/Logger/Level.h \
 		../Mediator/Logger/Logger.h \
-		../Mediator/GameLogic/position.h
+		../Mediator/GameLogic/position.h \
+		../Mediator/GameLogic/cell.h \
+		../Mediator/Events/event.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o eventwin.o ../Mediator/Events/EventField/eventwin.cpp
 
 eventadd.o: ../Mediator/Events/EventPlayer/eventadd.cpp ../Mediator/Events/EventPlayer/eventadd.h \
@@ -1289,53 +1309,49 @@ controller.o: ../Mediator/GameLogic/controller.cpp ../Mediator/GameLogic/control
 		../Mediator/Logger/Logger.h \
 		../Mediator/GameLogic/position.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/humanPlayer.h \
 		../Mediator/GameLogic/Player.h \
-		../Mediator/GameLogic/generatelevel.h \
-		../Mediator/Events/EventPlayer/eventadd.h \
-		../Mediator/Events/EventPlayer/eventPlayer.h \
-		../Mediator/Events/EventPlayer/eventnone.h \
-		../Mediator/Events/EventPlayer/eventkey.h \
-		../Mediator/Events/EventField/eventlock.h \
-		../Mediator/Events/EventField/eventField.h \
-		../Mediator/Events/EventField/eventunlock.h \
-		../Mediator/Events/EventField/eventwin.h \
+		../Mediator/GameLogic/humanPlayer.h \
+		../Mediator/seriallisation.h \
+		../Mediator/Exeptions/exeptionfield.h \
+		../Mediator/Exeptions/myexeption.h \
+		../Mediator/dataparser.h \
+		../Mediator/hasher.h \
+		../Mediator/Exeptions/exeptionfile.h \
 		../Mediator/Logger/filelogger.h \
+		../Mediator/Exeptions/exeptionplayer.h \
+		../Mediator/GameLogic/Rools/KeyRool.h \
+		../Mediator/GameLogic/Rools/RulesVectors.h \
+		../Mediator/Events/EventPlayer/eventkey.h \
+		../Mediator/Events/EventPlayer/eventPlayer.h \
+		../Mediator/GameLogic/Rools/UnlockRools.h \
+		../Mediator/GameLogic/Rools/WinRool.h \
+		../Mediator/Events/EventField/eventwin.h \
+		../Mediator/Events/EventField/eventField.h \
+		../Mediator/GameLogic/Rools/eventrool.h \
+		../Mediator/Events/EventField/eventlock.h \
+		../Mediator/Events/EventField/eventunlock.h \
+		../Mediator/Events/EventPlayer/eventadd.h \
+		../Mediator/Events/EventPlayer/eventnone.h \
+		../Mediator/GameLogic/Rools/lockcellrool.h \
+		../Mediator/GameLogic/Rools/playerpositionrool.h \
+		../Mediator/GameLogic/generaterools.h \
 		../Mediator/Logger/consolelogger.h \
 		../Mediator/Observer/loggerobserver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controller.o ../Mediator/GameLogic/controller.cpp
 
 field.o: ../Mediator/GameLogic/field.cpp ../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/cell.h \
-		../Mediator/Events/event.h \
-		../Mediator/Observable/gamesubject.h \
-		../Mediator/Observable/Observable.h \
-		../Mediator/Observer/Observer.h \
-		../Mediator/Logger/Level.h \
-		../Mediator/Logger/Logger.h \
-		../Mediator/GameLogic/position.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o field.o ../Mediator/GameLogic/field.cpp
-
-generatelevel.o: ../Mediator/GameLogic/generatelevel.cpp ../Mediator/GameLogic/generatelevel.h \
-		../Mediator/Events/EventPlayer/eventadd.h \
-		../Mediator/Events/EventPlayer/eventPlayer.h \
-		../Mediator/Events/event.h \
-		../Mediator/Observable/gamesubject.h \
-		../Mediator/Observable/Observable.h \
-		../Mediator/Observer/Observer.h \
-		../Mediator/Logger/Level.h \
-		../Mediator/Logger/Logger.h \
 		../Mediator/GameLogic/Player.h \
+		../Mediator/Observable/gamesubject.h \
+		../Mediator/Observable/Observable.h \
+		../Mediator/Observer/Observer.h \
+		../Mediator/Logger/Level.h \
+		../Mediator/Logger/Logger.h \
 		../Mediator/GameLogic/position.h \
-		../Mediator/Events/EventPlayer/eventnone.h \
-		../Mediator/Events/EventPlayer/eventkey.h \
-		../Mediator/Events/EventField/eventlock.h \
-		../Mediator/Events/EventField/eventField.h \
-		../Mediator/GameLogic/field.h \
 		../Mediator/GameLogic/cell.h \
-		../Mediator/Events/EventField/eventunlock.h \
-		../Mediator/Events/EventField/eventwin.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o generatelevel.o ../Mediator/GameLogic/generatelevel.cpp
+		../Mediator/Events/event.h \
+		../Mediator/Events/EventField/eventField.h \
+		../Mediator/Events/EventPlayer/eventPlayer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o field.o ../Mediator/GameLogic/field.cpp
 
 humanPlayer.o: ../Mediator/GameLogic/humanPlayer.cpp ../Mediator/GameLogic/humanPlayer.h \
 		../Mediator/GameLogic/position.h \
@@ -1417,8 +1433,35 @@ fieldview.o: ../Mediator/Views/fieldview.cpp ../Mediator/Views/fieldview.h \
 		../Mediator/Logger/Level.h \
 		../Mediator/Logger/Logger.h \
 		../Mediator/GameLogic/position.h \
-		../Mediator/GameLogic/field.h
+		../Mediator/GameLogic/field.h \
+		../Mediator/GameLogic/Player.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fieldview.o ../Mediator/Views/fieldview.cpp
+
+dataparser.o: ../Mediator/dataparser.cpp ../Mediator/dataparser.h \
+		../Mediator/GameLogic/field.h \
+		../Mediator/GameLogic/Player.h \
+		../Mediator/Observable/gamesubject.h \
+		../Mediator/Observable/Observable.h \
+		../Mediator/Observer/Observer.h \
+		../Mediator/Logger/Level.h \
+		../Mediator/Logger/Logger.h \
+		../Mediator/GameLogic/position.h \
+		../Mediator/GameLogic/cell.h \
+		../Mediator/Events/event.h \
+		../Mediator/Events/EventField/eventwin.h \
+		../Mediator/Events/EventField/eventField.h \
+		../Mediator/Events/EventField/eventunlock.h \
+		../Mediator/Events/EventField/eventlock.h \
+		../Mediator/Events/EventPlayer/eventnone.h \
+		../Mediator/Events/EventPlayer/eventPlayer.h \
+		../Mediator/Events/EventPlayer/eventadd.h \
+		../Mediator/Events/EventPlayer/eventkey.h \
+		../Mediator/Exeptions/exeptionfield.h \
+		../Mediator/Exeptions/myexeption.h \
+		../Mediator/Exeptions/exeptionfile.h \
+		../Mediator/Exeptions/exeptionplayer.h \
+		../Mediator/hasher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dataparser.o ../Mediator/dataparser.cpp
 
 dialog.o: ../Mediator/dialog.cpp ../Mediator/dialog.h \
 		../Mediator/Observer/Observer.h \
@@ -1428,6 +1471,9 @@ dialog.o: ../Mediator/dialog.cpp ../Mediator/dialog.h \
 		../Mediator/Logger/consolelogger.h \
 		../Mediator/Logger/filelogger.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog.o ../Mediator/dialog.cpp
+
+hasher.o: ../Mediator/hasher.cpp ../Mediator/hasher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hasher.o ../Mediator/hasher.cpp
 
 jsonservise.o: ../Mediator/jsonservise.cpp ../Mediator/jsonservise.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o jsonservise.o ../Mediator/jsonservise.cpp
@@ -1450,17 +1496,14 @@ main.o: ../Mediator/main.cpp ../Mediator/commandreader.h \
 		../Mediator/Observable/gamesubject.h \
 		../Mediator/Observable/Observable.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/humanPlayer.h \
 		../Mediator/GameLogic/Player.h \
-		../Mediator/GameLogic/generatelevel.h \
-		../Mediator/Events/EventPlayer/eventadd.h \
-		../Mediator/Events/EventPlayer/eventPlayer.h \
-		../Mediator/Events/EventPlayer/eventnone.h \
-		../Mediator/Events/EventPlayer/eventkey.h \
-		../Mediator/Events/EventField/eventlock.h \
-		../Mediator/Events/EventField/eventField.h \
-		../Mediator/Events/EventField/eventunlock.h \
-		../Mediator/Events/EventField/eventwin.h
+		../Mediator/GameLogic/humanPlayer.h \
+		../Mediator/seriallisation.h \
+		../Mediator/Exeptions/exeptionfield.h \
+		../Mediator/Exeptions/myexeption.h \
+		../Mediator/dataparser.h \
+		../Mediator/hasher.h \
+		../Mediator/Exeptions/exeptionfile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Mediator/main.cpp
 
 commandreader.o: ../Mediator/commandreader.cpp ../Mediator/commandreader.h \
@@ -1489,17 +1532,14 @@ mediator.o: ../Mediator/mediator.cpp ../Mediator/mediator.h \
 		../Mediator/Logger/Logger.h \
 		../Mediator/GameLogic/position.h \
 		../Mediator/GameLogic/field.h \
-		../Mediator/GameLogic/humanPlayer.h \
 		../Mediator/GameLogic/Player.h \
-		../Mediator/GameLogic/generatelevel.h \
-		../Mediator/Events/EventPlayer/eventadd.h \
-		../Mediator/Events/EventPlayer/eventPlayer.h \
-		../Mediator/Events/EventPlayer/eventnone.h \
-		../Mediator/Events/EventPlayer/eventkey.h \
-		../Mediator/Events/EventField/eventlock.h \
-		../Mediator/Events/EventField/eventField.h \
-		../Mediator/Events/EventField/eventunlock.h \
-		../Mediator/Events/EventField/eventwin.h \
+		../Mediator/GameLogic/humanPlayer.h \
+		../Mediator/seriallisation.h \
+		../Mediator/Exeptions/exeptionfield.h \
+		../Mediator/Exeptions/myexeption.h \
+		../Mediator/dataparser.h \
+		../Mediator/hasher.h \
+		../Mediator/Exeptions/exeptionfile.h \
 		../Mediator/Movers/AbstractMove.h \
 		../Mediator/commandreader.h \
 		../Mediator/MediatorInterface.h \

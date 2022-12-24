@@ -21,6 +21,7 @@ public:
     bool keyState() override {return key;}
     std::string printState() override;
     void startNew(const Position & pos) override;
+    std::string toString() override;
 private:
     Position currentPosition = Position(0,0);
     int health = 100;

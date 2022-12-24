@@ -1,0 +1,60 @@
+[INFO]Player's new position (2 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 70
+[INFO]Player's new position (1 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 60
+[INFO]Player's new position (0 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 50
+[INFO]Player's new position (1 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 40
+[INFO]Player's new position (2 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 30
+[INFO]Player's new position (3 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 20
+[INFO]Player's new position (3 ; 4)
+[STATE CHANGE]OOO + 10 HP
+[STATE CHANGE]New Player's health is 30
+[INFO]Player's new position (4 ; 4)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 20
+[INFO]Player's new position (4 ; 3)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 10
+[INFO]Player's new position (4 ; 2)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 0
+[STATE CHANGE]----LOSE----
+[INFO]Started new game
+[INFO]Player's new position (1 ; 0)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 90
+[INFO]Player's new position (2 ; 0)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 80
+[INFO]Player's new position (2 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 70
+[INFO]Player's new position (2 ; 4)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 60
+[INFO]Player's new position (1 ; 4)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 50
+[INFO]Player's new position (0 ; 4)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 40
+[INFO]Player's new position (0 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 30
+[INFO]Player's new position (0 ; 0)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 20
+[INFO]Player's new position (0 ; 5)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 10
+[INFO]Exit game

@@ -26,7 +26,8 @@ Cell::Cell(Event *event, const Position &position, bool isOpen): event(event), p
 
 Cell::~Cell()
 {
-    event = nullptr;
+    if(event != nullptr)
+        delete event;
 }
 
 Cell &Cell::operator = (Cell &&other)
@@ -45,7 +46,8 @@ Cell::Cell(Cell &&source): event(source.event), position(source.position), isOpe
 
 void Cell::setEvent(Event *newEvent)
 {
-    event = nullptr;
+    if(event != nullptr)
+        delete event;
     event = newEvent;
 }
 

@@ -13,5 +13,6 @@ public:
     virtual void deleteLevel(Level level) = 0;
     virtual void update(Level level, std::string s) = 0;
     virtual void clear() = 0;
+    virtual std::string toString() = 0;
 };
 #endif // OBSERVER_H

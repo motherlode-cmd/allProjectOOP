@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'commandreader.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.6
+** Created by: Qt User Interface Compiler version 5.15.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -12,7 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -39,9 +39,7 @@ public:
     QPushButton *down;
     QProgressBar *progressBar;
     QPushButton *pushButton_3;
-    QComboBox *comboBox;
     QPushButton *pushButton_2;
-    QLineEdit *lineEdit;
     QLabel *label;
     QPushButton *pushButton_logger;
     QSpinBox *spinBox;
@@ -49,6 +47,10 @@ public:
     QCheckBox *checkBox_info;
     QCheckBox *checkBox_state;
     QCheckBox *checkBox_Error;
+    QGraphicsView *graphicsView;
+    QPushButton *Saver;
+    QPushButton *load;
+    QLineEdit *fileName;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -65,7 +67,7 @@ public:
         tableWidget = new QTableWidget(centralwidget);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setEnabled(true);
-        tableWidget->setGeometry(QRect(100, 90, 631, 361));
+        tableWidget->setGeometry(QRect(180, 110, 381, 321));
         tableWidget->setMouseTracking(false);
         tableWidget->setTabletTracking(false);
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -88,29 +90,17 @@ public:
         down->setGeometry(QRect(90, 510, 40, 40));
         progressBar = new QProgressBar(centralwidget);
         progressBar->setObjectName(QString::fromUtf8("progressBar"));
-        progressBar->setGeometry(QRect(610, 60, 118, 23));
+        progressBar->setGeometry(QRect(600, 80, 118, 23));
         progressBar->setValue(24);
         pushButton_3 = new QPushButton(centralwidget);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setGeometry(QRect(290, 50, 80, 25));
-        comboBox = new QComboBox(centralwidget);
-        comboBox->addItem(QString());
-        comboBox->addItem(QString());
-        comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setEnabled(false);
-        comboBox->setGeometry(QRect(20, 170, 72, 25));
         pushButton_2 = new QPushButton(centralwidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(450, 30, 80, 25));
-        lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(22, 180, 751, 261));
-        lineEdit->setStyleSheet(QString::fromUtf8("font: 9pt \"TSCu_Comic\"\n"
-"rgb(135, 163, 255)\n"
-"qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(9, 41, 4, 255), stop:0.085 rgba(2, 79, 0, 255), stop:0.19 rgba(50, 147, 22, 255), stop:0.275 rgba(236, 191, 49, 255), stop:0.39 rgba(243, 61, 34, 255), stop:0.555 rgba(135, 81, 60, 255), stop:0.667 rgba(121, 75, 255, 255), stop:0.825 rgba(164, 255, 244, 255), stop:0.885 rgba(104, 222, 71, 255), stop:1 rgba(93, 128, 0, 255))"));
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(280, 130, 291, 151));
+        label->setGeometry(QRect(250, 440, 291, 151));
         pushButton_logger = new QPushButton(centralwidget);
         pushButton_logger->setObjectName(QString::fromUtf8("pushButton_logger"));
         pushButton_logger->setGeometry(QRect(160, 30, 80, 25));
@@ -129,6 +119,18 @@ public:
         checkBox_Error = new QCheckBox(centralwidget);
         checkBox_Error->setObjectName(QString::fromUtf8("checkBox_Error"));
         checkBox_Error->setGeometry(QRect(20, 50, 77, 23));
+        graphicsView = new QGraphicsView(centralwidget);
+        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
+        graphicsView->setGeometry(QRect(420, 110, 371, 311));
+        Saver = new QPushButton(centralwidget);
+        Saver->setObjectName(QString::fromUtf8("Saver"));
+        Saver->setGeometry(QRect(620, 10, 80, 25));
+        load = new QPushButton(centralwidget);
+        load->setObjectName(QString::fromUtf8("load"));
+        load->setGeometry(QRect(710, 10, 80, 25));
+        fileName = new QLineEdit(centralwidget);
+        fileName->setObjectName(QString::fromUtf8("fileName"));
+        fileName->setGeometry(QRect(650, 40, 113, 25));
         CommandReader->setCentralWidget(centralwidget);
         menubar = new QMenuBar(CommandReader);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -152,16 +154,14 @@ public:
         right->setText(QCoreApplication::translate("CommandReader", "<-", nullptr));
         down->setText(QCoreApplication::translate("CommandReader", "down", nullptr));
         pushButton_3->setText(QCoreApplication::translate("CommandReader", "Level : ", nullptr));
-        comboBox->setItemText(0, QCoreApplication::translate("CommandReader", "+", nullptr));
-        comboBox->setItemText(1, QCoreApplication::translate("CommandReader", "-", nullptr));
-
         pushButton_2->setText(QCoreApplication::translate("CommandReader", "\321\201\321\211\320\267\320\275", nullptr));
-        lineEdit->setText(QCoreApplication::translate("CommandReader", "YOU LOSE", nullptr));
         label->setText(QCoreApplication::translate("CommandReader", "TextLabel", nullptr));
         pushButton_logger->setText(QCoreApplication::translate("CommandReader", "Log", nullptr));
         checkBox_info->setText(QCoreApplication::translate("CommandReader", "Info", nullptr));
         checkBox_state->setText(QCoreApplication::translate("CommandReader", "State", nullptr));
         checkBox_Error->setText(QCoreApplication::translate("CommandReader", "Error", nullptr));
+        Saver->setText(QCoreApplication::translate("CommandReader", "save", nullptr));
+        load->setText(QCoreApplication::translate("CommandReader", "Load", nullptr));
     } // retranslateUi
 
 };

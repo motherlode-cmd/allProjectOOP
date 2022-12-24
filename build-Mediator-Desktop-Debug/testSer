@@ -1,0 +1,16 @@
+FIELD START:
+6 6
+o- o- o- c- o- o- 
+o- ou c+ ou o- o- 
+o- c- o- cw o- o- 
+c- ol o- ol o+ o- 
+o- o- o- o- o- ok 
+o- o- o- o+ c- o- 
+FIELD END
+HUMANPLAYER POSITION 0 0
+OBS START:
+	LEVELS:
+	LOGGERS:
+		CL
+		FL ../Mediator/newTest.txt
+OBS END

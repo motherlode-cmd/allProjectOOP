@@ -17,10 +17,14 @@ public:
     Observer * getObserver() override {return controller->getObserver();}
     void addLevel(Level level) override {controller->addLevel(level);}
     void deleteLevel(Level level) override {controller->deleteLevel(level);}
+    void save(std::string fileName) override {controller->serialization(fileName);}
+    void load(std::string fileName) override;
 private:
     void statusGame(int val) override;
     Controller * controller;
     CommandReader * commandReader;
+    //QOpenGLWidget * field_drow = nullptr;
+    QGraphicsScene * sc = nullptr;
     QTableWidget * t = nullptr;
     int a = 0;
 };

@@ -9,6 +9,10 @@ public:
     ~EventAdd(){}
     void makeAction(Player * player) override;
     std::string print() const override {return "OOO + 10 HP";}
+    EventAdd * clone() override{
+        return new EventAdd();
+    }
+
 };
 
 #endif // EVENTADD_H

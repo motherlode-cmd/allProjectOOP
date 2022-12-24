@@ -1,0 +1,9 @@
+[INFO]Player's new position (4 ; 2)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 10
+[INFO]Player's new position (4 ; 1)
+[STATE CHANGE]OOOOPS -10 HP
+[STATE CHANGE]New Player's health is 0
+[STATE CHANGE]----LOSE----
+[INFO]Started new game
+[INFO]Exit game

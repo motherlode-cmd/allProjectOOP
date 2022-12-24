@@ -13,6 +13,8 @@ public:
     bool operator == (const ConsoleLogger &) {
         return true;
     }
+
+    std::string toString() override {return "\t\tCL\n";}
 protected:
     //std::ostream& os;
 };

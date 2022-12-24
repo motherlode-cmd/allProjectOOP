@@ -10,6 +10,10 @@ public:
     void newField(Field & field) override;
     //friend std::ostream& operator << (std::ostream &, EventUnlock *);
     std::string print() const override {return "Unlock some cells";}
+    EventUnlock * clone() override{
+        return new EventUnlock();
+    }
+
 };
 
 #endif // EVENTUNLOCK_H

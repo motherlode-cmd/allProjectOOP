@@ -1,4 +1,5 @@
 QT       += core gui
+QT += opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,7 +19,6 @@ SOURCES += \
     GameLogic/cell.cpp \
     GameLogic/controller.cpp \
     GameLogic/field.cpp \
-    GameLogic/generatelevel.cpp \
     GameLogic/humanPlayer.cpp \
     GameLogic/position.cpp \
     Logger/consolelogger.cpp \
@@ -29,11 +29,13 @@ SOURCES += \
     Observer/loggerobserver.cpp \
     Views/cellview.cpp \
     Views/fieldview.cpp \
+    dataparser.cpp \
     dialog.cpp \
+    hasher.cpp \
     jsonservise.cpp \
     main.cpp \
     commandreader.cpp \
-    mediator.cpp
+    mediator.cpp \
 
 HEADERS += \
     Events/EventField/eventField.h \
@@ -45,11 +47,22 @@ HEADERS += \
     Events/EventPlayer/eventadd.h \
     Events/EventPlayer/eventnone.h \
     Events/event.h \
+    Exeptions/exeptionfield.h \
+    Exeptions/exeptionfile.h \
+    Exeptions/exeptionplayer.h \
+    Exeptions/myexeption.h \
     GameLogic/Player.h \
+    GameLogic/Rools/KeyRool.h \
+    GameLogic/Rools/RulesVectors.h \
+    GameLogic/Rools/UnlockRools.h \
+    GameLogic/Rools/WinRool.h \
+    GameLogic/Rools/eventrool.h \
+    GameLogic/Rools/lockcellrool.h \
+    GameLogic/Rools/playerpositionrool.h \
     GameLogic/cell.h \
     GameLogic/controller.h \
     GameLogic/field.h \
-    GameLogic/generatelevel.h \
+    GameLogic/generaterools.h \
     GameLogic/humanPlayer.h \
     GameLogic/position.h \
     Logger/Level.h \
@@ -67,10 +80,13 @@ HEADERS += \
     Views/cellview.h \
     Views/fieldview.h \
     commandreader.h \
+    dataparser.h \
     dialog.h \
+    hasher.h \
     jsonservise.h \
     mediator.h \
-    MediatorInterface.h
+    MediatorInterface.h \
+    seriallisation.h
 
 FORMS += \
     commandreader.ui \

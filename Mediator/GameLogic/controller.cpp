@@ -1,10 +1,18 @@
 #include "controller.h"
-#include "./Events/EventField/eventField.h"
-#include "./Events/EventPlayer/eventPlayer.h"
 #include "./Logger/filelogger.h"
+#include "Exeptions/exeptionfield.h"
+#include "Exeptions/exeptionplayer.h"
+#include "GameLogic/Rools/KeyRool.h"
+#include "GameLogic/Rools/UnlockRools.h"
+#include "GameLogic/Rools/WinRool.h"
+#include "GameLogic/Rools/eventrool.h"
+#include "GameLogic/Rools/lockcellrool.h"
+#include "GameLogic/Rools/playerpositionrool.h"
+#include "GameLogic/generaterools.h"
 #include "humanPlayer.h"
+#include <fstream>
 #include "Logger/consolelogger.h"
-#include "generatelevel.h"
+//#include "generatelevel.h"
 #include "./Observer/loggerobserver.h"
 
 Controller::Controller()
@@ -16,7 +24,6 @@ Controller::Controller()
     obs->addLogger(ofs);
     field.setObs(obs);
     player->setObs(obs);
-    generateLevel.setEventObs(obs);
 }
 
 Controller::~Controller()
@@ -26,34 +33,28 @@ Controller::~Controller()
     delete player;
 }
 
-void Controller::start(QTableWidget * table, int n, int m)
+void Controller::start(QTableWidget * table, QGraphicsScene * sc, int n, int m)
 {
     started = true;
     state = 1;
     field = Field(n + level, m + level);
+    fieldView = FieldView(field, table, sc);
     if(n > 0 && m > 0){
         obs->update(Level::Info,"Started new game");
-        //delete player;
-        player->startNew(field.getPositionPlayer());
-        //player->setObs(obs);
-        nextLevel(table);
+        nextLevel(table, sc);
     } else {
         obs->update(Level::Error,"invalid size for field");
     }
 }
 
-void Controller::makeMove(QTableWidget * table, int x, int y)
+
+void Controller::makeMove(QTableWidget * table, QGraphicsScene * sc, int x, int y)
 {
     try {
         if(field.getHeight() > 0 && field.getWidth() > 0) {
-            field.playerMove(x, y);
-            player->makeMove(field.getPositionPlayer());
-            if(field.getCurrentEvent() == dynamic_cast<EventField *>(field.getCurrentEvent()))
-                ((EventField *)field.getCurrentEvent())->newField(field);
-            else if(field.getCurrentEvent() == dynamic_cast<EventPlayer *>(field.getCurrentEvent()))
-               ((EventPlayer *)field.getCurrentEvent())->makeAction(player);
+            field.playerMove(x, y, player);
             checkState();
-            fieldView.drowField(field, table);
+            fieldView.drowField(field, table, sc);
         } else {
             throw(field.getHeight());
         }
@@ -86,19 +87,28 @@ void Controller::checkState()
         state = 2;
         level++;
         started = false;
+        field = Field(0,0);
     }
     if(player->getHealth() == 0){
         state = 0;
         level = 0;
         started = 0;
+        field = Field(0,0);
     }
 }
 
-void Controller::nextLevel(QTableWidget * table)
+void Controller::nextLevel(QTableWidget * table, QGraphicsScene *sc)
 {
     if(field.getHeight() > 0 && field.getWidth() > 0) {
-        generateLevel.generateLevel(field);
-        fieldView = FieldView(field, table);
+        if( level % 2 == 0) {
+            GenerateRools <LockCellRool<1>, UnlockCellRool<1>, PlayerPositionRool<1>, EventRool<1>, WinRool<1>, KeyRool<1> > g;
+            field = g.generate(field, player);
+            fieldView.drowField(field, table, sc);
+        } else if(level % 2 == 1) {
+            GenerateRools <LockCellRool<2>, UnlockCellRool<2>, PlayerPositionRool<2>, EventRool<2>, WinRool<2>, KeyRool<2>> g;
+            field = g.generate(field, player);
+            fieldView.drowField(field, table, sc);
+        }
     }
 }
 
@@ -111,6 +121,37 @@ void Controller::deleteLevel(Level level)
 {
     obs->deleteLevel(level);
 }
+
+void Controller::serialization(std::string fileName)
+{
+    Seriallisation <FieldView, Player> s;
+    fieldView.toString(field);
+    try {
+        s.write(fileName, level, fieldView, *player);
+    } catch(ExeptionFile & e) {
+        std::cout<<e.what_()<<std::endl;
+    }
+}
+
+Position Controller::load(QTableWidget *t, QGraphicsScene *sc, std::string fileName)
+{
+    //"testSer.bin"
+    Seriallisation <FieldView, Player> s;
+    try{
+        s.load(fileName, level, field, player);
+    } catch(ExeptionFile & e) {
+        std::cout<<e.what_()<<std::endl;
+    } catch(ExeptionField & ef) {
+        std::cout<<ef.what_()<<std::endl;
+    } catch(ExeptionPlayer & ef) {
+        std::cout<<ef.what_()<<std::endl;
+    }
+    fieldView = FieldView(field, t, sc);
+    started = true;
+    state = 1;
+    return Position(field.getHeight() - level, field.getWidth() - level);
+}
+
 
 void Controller::addLevel(Level level)
 {

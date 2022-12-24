@@ -12,6 +12,12 @@ public:
         out << obj.print();
         return out;
     }
-};
+    virtual Event * clone() = 0;
+};//    eventAdd->setObs(obs);
+//    eventNone->setObs(obs);
+//    eventLock->setObs(obs);
+//    eventUnlock->setObs(obs);
+//    eventWin->setObs(obs);
+//    eventKey->setObs(obs);
 
 #endif // EVENT_H

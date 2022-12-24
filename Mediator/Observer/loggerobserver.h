@@ -15,6 +15,7 @@ public:
     void addLevel(Level level) override;
     void deleteLevel(Level level) override;
     void update(Level level, std::string s) override;
+    std::string toString() override;
 private:
     int findLevel(Level level);
     std::set <Logger*> logs;

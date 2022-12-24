@@ -1,5 +1,6 @@
 #ifndef FIELD_H
 #define FIELD_H
+#include "GameLogic/Player.h"
 #include "cell.h"
 #include "../Observable/gamesubject.h"
 class Field : public GameSubject
@@ -13,12 +14,12 @@ public:
     friend std::ostream& operator << (std::ostream &, const Field &);
     ~Field();
     void setNewEvent(Event *event, int x, int y);
-    void playerMove(int deltaX, int deltaY);
+    void playerMove(int deltaX, int deltaY, Player * player);
     friend class FieldView;
+    void setStartPosition(Position &&pos);
     int getHeight() const;
     int getWidth() const;
     const Position &getPositionPlayer() const;
-    void setCell(int x, int y,const Cell & cell);
     Event * getCurrentEvent();
     void setPositionWin(int x, int y);
     void unlockWin();
@@ -26,6 +27,10 @@ public:
     void lockCell(int x, int y);
     friend void newField(Field & field);
     bool isWin();
+    bool isOpen(int x, int y){
+        return cells[x][y].getIsOpen();
+    }
+    void openCell(int x, int y);
 
 private:
     bool validXY(int x, int y) {
@@ -37,7 +42,7 @@ private:
 protected:
     Cell ** cells = nullptr;
     Position positionPlayer = Position(0,0);
-    Position positionWin = Position(1,1);
+    Position positionWin = Position(-1,-1);
     int height = 3;
     int width = 3;
 private:

@@ -6,6 +6,7 @@
 #include "./Movers/uimover.h"
 #include <QMainWindow>
 #include <iostream>
+#include <QOpenGLWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CommandReader; }
@@ -21,6 +22,7 @@ public:
     void addMediator(MediatorInterface * m);
 
     QTableWidget * get_table();
+    QGraphicsScene * getScene();
 
     void win();
 
@@ -51,6 +53,12 @@ public slots:
     void on_checkBox_state_stateChanged(int arg1);
 
     void on_checkBox_Error_stateChanged(int arg1);
+    void setSize(int i, int j);
+private slots:
+    void on_Saver_clicked();
+
+    void on_load_clicked();
+
 private:
     void lockButtons(bool l);
     void setup_visual();
@@ -58,11 +66,11 @@ private:
     MediatorInterface * mediator = nullptr;
     UIMover * umover = new UIMover();
     FileMover * fmover = new FileMover("../Mediator/settings.json");
+    QGraphicsScene * scene;
 };
 
 inline void CommandReader::keyPressEvent(QKeyEvent *e)
 {
-    //std::cout<<"key"<<std::endl;
     fmover->setMove(e);
     try{
         mediator->makeMove(fmover);

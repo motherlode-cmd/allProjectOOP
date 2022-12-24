@@ -9,6 +9,9 @@ public:
     void newField(Field & field) override;
     //friend std::ostream& operator << (std::ostream &, EventWin *);
     std::string print() const override {return " -WINER- ";}
+    EventWin * clone() override {
+        return new EventWin();
+    }
 };
 
 #endif // EVENTWIN_H

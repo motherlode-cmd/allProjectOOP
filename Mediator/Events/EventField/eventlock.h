@@ -9,6 +9,10 @@ public:
     ~EventLock(){}
     void newField(Field & field) override;
     std::string print() const override {return "Locked cell " ;}
+    EventLock * clone() override{
+        return new EventLock();
+    }
+
 };
 
 #endif // EVENTLOCK_H

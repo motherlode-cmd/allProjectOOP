@@ -14,7 +14,9 @@ public:
     Cell(Event * event, const Position & position, bool isOpen);
     ~Cell();
     void setEvent(Event *newEvent);
+
     const Position &getPosition() const;
+
     bool getIsOpen() const;
 
     Event *getEvent() const;

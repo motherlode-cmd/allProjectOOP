@@ -10,6 +10,10 @@ public:
 //    friend std::ostream& operator << (std::ostream &, EventNone *);
     void makeAction(Player * player) override;
     std::string print() const override {return "OOOOPS -10 HP";}
+    EventNone * clone() override{
+        return new EventNone();
+    }
+
 };
 
 #endif // EVENTNONE_H

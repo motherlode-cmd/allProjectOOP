@@ -19,5 +19,6 @@ public:
         os <<"Player's Health after move: "<< a << " ";
         return os;
     }
+    virtual std::string toString() = 0;
 };
 #endif // PLAYER_H

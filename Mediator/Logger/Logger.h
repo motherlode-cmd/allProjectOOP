@@ -6,5 +6,6 @@ class Logger {
 public:
     virtual ~Logger(){}
     virtual void log(Level level, std::string str) = 0;
+    virtual std::string toString() = 0;
 };
 #endif // LOGGER_H
